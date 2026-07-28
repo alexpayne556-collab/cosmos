@@ -1,0 +1,263 @@
+{
+  "CVGI": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 3.59,
+      "last": 4.62,
+      "ret": 28.7,
+      "maxdd": -23.9,
+      "ups": 2,
+      "dns": 0,
+      "hi": 5.78,
+      "lo": 3.19
+    },
+    "fundamentals": {
+      "last": 4.53,
+      "cap": 180700000.0,
+      "float": 26600000.0,
+      "pe": -8.74,
+      "sector": "Producer Mfg",
+      "hi52": 5.88,
+      "lo52": 1.29,
+      "hi_dt": "2026-06-03",
+      "lo_dt": "2025-11-07",
+      "status": "",
+      "av30d": 620182
+    },
+    "proposed_class": "AMBIGUOUS",
+    "rationale": "window +29%, 2 spikes, 71% up range"
+  },
+  "AIRS": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 2.65,
+      "last": 4.61,
+      "ret": 74.0,
+      "maxdd": -27.3,
+      "ups": 2,
+      "dns": 0,
+      "hi": 5.71,
+      "lo": 2.44
+    },
+    "fundamentals": {
+      "last": 4.69,
+      "cap": 342800000.0,
+      "float": 6750000.0,
+      "pe": -26.51,
+      "sector": "Health Tech",
+      "hi52": 12.0,
+      "lo52": 1.51,
+      "hi_dt": "2025-10-27",
+      "lo_dt": "2026-03-02",
+      "status": "",
+      "av30d": 454217
+    },
+    "proposed_class": "AMBIGUOUS",
+    "rationale": "window +74%, 2 spikes, 30% up range"
+  },
+  "VTIX": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 8.88,
+      "last": 2.64,
+      "ret": -70.3,
+      "maxdd": -74.2,
+      "ups": 1,
+      "dns": 4,
+      "hi": 8.88,
+      "lo": 2.29
+    },
+    "fundamentals": {
+      "last": 2.17,
+      "cap": 71400000.0,
+      "float": 20500000.0,
+      "pe": -4.23,
+      "sector": "Electronic Tech",
+      "hi52": 92.74,
+      "lo52": 1.47,
+      "hi_dt": "2026-01-27",
+      "lo_dt": "2026-07-27",
+      "status": "",
+      "av30d": 951212
+    },
+    "proposed_class": "DILUTION_CYCLE / COLLAPSE",
+    "rationale": "98% off 52w high"
+  },
+  "LGVN": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 0.98,
+      "last": 0.6,
+      "ret": -38.8,
+      "maxdd": -48.3,
+      "ups": 0,
+      "dns": 0,
+      "hi": 1.16,
+      "lo": 0.6
+    },
+    "fundamentals": {
+      "last": 0.6142,
+      "cap": 19400000.0,
+      "float": 26100000.0,
+      "pe": -0.53,
+      "sector": "Biotech",
+      "hi52": 1.75,
+      "lo52": 0.475,
+      "hi_dt": "2025-08-04",
+      "lo_dt": "2026-03-06",
+      "status": "Noncompliant",
+      "av30d": 267298
+    },
+    "proposed_class": "DILUTION_CYCLE / COLLAPSE",
+    "rationale": "65% off 52w high, NONCOMPLIANT"
+  },
+  "STAK": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 1.02,
+      "last": 2.52,
+      "ret": 147.1,
+      "maxdd": -83.9,
+      "ups": 12,
+      "dns": 8,
+      "hi": 9.27,
+      "lo": 0.81
+    },
+    "fundamentals": {
+      "last": 2.55,
+      "cap": 123200000.0,
+      "float": null,
+      "pe": null,
+      "sector": "Oilfield/China",
+      "hi52": 12.0,
+      "lo52": 0.29,
+      "hi_dt": "2026-07-24",
+      "lo_dt": "2026-02-05",
+      "status": "",
+      "av30d": 7934235
+    },
+    "proposed_class": "DILUTION_CYCLE / COLLAPSE",
+    "rationale": "79% off 52w high"
+  },
+  "BDSX": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 14.875,
+      "last": 22.0,
+      "ret": 47.9,
+      "maxdd": -36.7,
+      "ups": 2,
+      "dns": 0,
+      "hi": 24.5,
+      "lo": 9.84
+    },
+    "fundamentals": {
+      "last": 21.86,
+      "cap": 246700000.0,
+      "float": 4660000.0,
+      "pe": -5.52,
+      "sector": "Diagnostics",
+      "hi52": 24.92,
+      "lo52": 5.26,
+      "hi_dt": "2026-07-01",
+      "lo_dt": "2026-01-09",
+      "status": "",
+      "av30d": 78722
+    },
+    "proposed_class": "SUSTAINED_REGIME",
+    "rationale": "+48% window, 84% up its 52w range, few spikes"
+  },
+  "QTTB": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 6.68,
+      "last": 15.15,
+      "ret": 126.8,
+      "maxdd": -32.6,
+      "ups": 3,
+      "dns": 2,
+      "hi": 21.38,
+      "lo": 4.92
+    },
+    "fundamentals": {
+      "last": 15.14,
+      "cap": 453600000.0,
+      "float": 9500000.0,
+      "pe": 5.71,
+      "sector": "Biotech",
+      "hi52": 23.57,
+      "lo52": 1.57,
+      "hi_dt": "2026-07-14",
+      "lo_dt": "2025-08-11",
+      "status": "",
+      "av30d": 2502073
+    },
+    "proposed_class": "SERIAL_CATALYST",
+    "rationale": "3x +15% & 2x -15% single-day moves in window"
+  },
+  "RXT": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 1.69,
+      "last": 3.86,
+      "ret": 128.4,
+      "maxdd": -48.7,
+      "ups": 10,
+      "dns": 5,
+      "hi": 7.53,
+      "lo": 0.884
+    },
+    "fundamentals": {
+      "last": 3.865,
+      "cap": 981400000.0,
+      "float": 98000000.0,
+      "pe": -6.34,
+      "sector": "Tech Services",
+      "hi52": 8.6,
+      "lo52": 0.393,
+      "hi_dt": "2026-06-17",
+      "lo_dt": "2026-02-12",
+      "status": "",
+      "av30d": 16200043
+    },
+    "proposed_class": "SERIAL_CATALYST",
+    "rationale": "10x +15% & 5x -15% single-day moves in window"
+  },
+  "DAIO": {
+    "exists": true,
+    "metrics": {
+      "n": 88,
+      "first": 2.46,
+      "last": 3.12,
+      "ret": 26.8,
+      "maxdd": -26.8,
+      "ups": 1,
+      "dns": 0,
+      "hi": 4.26,
+      "lo": 2.17
+    },
+    "fundamentals": {
+      "last": 3.075,
+      "cap": 28900000.0,
+      "float": 7900000.0,
+      "pe": -3.69,
+      "sector": "Industrial Mach",
+      "hi52": 4.49,
+      "lo52": 2.16,
+      "hi_dt": "2026-05-29",
+      "lo_dt": "2026-04-06",
+      "status": "",
+      "av30d": 45217
+    },
+    "proposed_class": "STRUCTURAL_NOISE",
+    "rationale": "thin (45k/d), tight 52w band, flat window"
+  }
+}

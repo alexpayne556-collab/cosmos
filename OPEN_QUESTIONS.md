@@ -37,6 +37,13 @@ shrinks then regrows is a healthy organism; an empty one is blindness.
 - **OQ-BOARDS-PRESS** — ADR-021 enumerates no shipping press for HORMUZ (Lloyd's List / TradeWinds proposed, pending).
 - **OQ-BOARDS-URLS** — boards carry descriptive source names; Names Law wants one literal source URL per claim.
 
+## Unverified third-party claims
+- **OQ-SPARK-DECAY-ARC** — Spark's decay-arc statistics (412 equities / 64 trading days; forward-10d returns by ordinal appearance +4.5 / +1.1 / -3.2 / -11.8 %; win rates 54.4 / 44.4 / 37.5 / 23.7 %) are **unverified third-party stats** — Spark has no market-data feed. Verify-station audit 2026-07-28: **all 9 named exemplars EXIST and trade**; the 4-class taxonomy is corroborated in the tape (VTIX/LGVN dilution, BDSX sustained, QTTB/RXT serial-catalyst, DAIO noise — 6/9 clean). **Decay magnitudes NOT reproduced.** Ruling: numbers do not enter code; the classifier ships `expected_return=None`, populated ONLY from our own 90-day backfill atlas (ADR-027). Evidence: `data/verify/spark_ticker_audit_2026-07-28.json`; code: `cosmos/top_gainers_tracker.py`.
+- **OQ-GAINER-OVERLAP** — the four gainer classes are NOT mutually exclusive: STAK was a violent 20-spike pump that also sat 79% off its 52w high (dilution+catalyst); CVGI/AIRS fit no clean box. Consider multi-label / confidence. Classifier currently emits a primary class + `overlap_flags`.
+
+## Confirmed insights
+- **LULD / extended session (Spark — verified, stands):** Limit-Up/Limit-Down halts apply during REGULAR hours only; AH/PM sessions genuinely lack that circuit breaker. Real structural insight. Directly relevant to extended-session first-touch grading (ADR-007) and the AMKR loss (Jul 27, traded through invalidation in the extended session) — an invalidation can be blown through by an after-hours gap with no halt to arrest it.
+
 ## Resolved
 - **OQ-BACKOFF-1** — Drill-2 (Sheets) 30s→2m→8m vs Drill-3 (EDGAR) 30s→2m→10m are intentionally distinct. RESOLVED — both encoded as `SHEETS_PROFILE` / `SEC_EDGAR_PROFILE` in `cosmos/backoff.py`.
 - **OQ-HANDOFF-CONST** — `COSMOS_SAVANT_HANDOFF.md` is the verbatim record; `CONSTITUTION.md` is the living charter ADRs amend. RESOLVED.

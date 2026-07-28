@@ -24,6 +24,12 @@ A descendant grader (Phase 3) upgrades the ancestor to:
 
 `governor.py` and `ledger.py` stay byte-frozen; only this descendant changes.
 
+**Extended-session risk (verified insight, Spark — stands):** LULD halts apply in
+regular hours ONLY, so AH/PM sessions lack that circuit breaker. First-touch
+grading in the extended session must treat gap-throughs as real — an invalidation
+can be breached with no halt to arrest it. This is why AMKR graded LOSS on a Jul-27
+extended-session move through its invalidation. (See OQ, Confirmed insights.)
+
 ## Status — PARTIAL (blocked spec)
 The orchestrator's spec for this upgrade was truncated at
 `AMBIGUOUS_BOTH_TOUCHED=loss,` (OQ-RECONCILE-P3). Full point-3 list (move-start/
