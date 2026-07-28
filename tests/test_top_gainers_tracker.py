@@ -2,14 +2,65 @@ from __future__ import annotations
 
 import pytest
 
-from cosmos.top_gainers_tracker import (
-    GainerClass, GainerFeatures, PROFILES,
+from cosmos.analytics.top_gainers_tracker import (
+    GainerClass, GainerFeatures, PROFILES, TopGainersTracker,
     classify_gainer, expected_return_from_atlas,
 )
 
 
+# --------------------------------------------------------------------------- #
+#  Lens 1 — recurrence + SEC-filing classifier                                #
+# --------------------------------------------------------------------------- #
+def _tracker():
+    return TopGainersTracker()
+
+
+def test_recurrence_dilution_on_shelf_filing():
+    t = _tracker()
+    assert t._classify_recurrence_pattern("X", 2, 5.0, 20.0, ["S-3"]) == \
+        ("DILUTION CYCLE", "HYPOTHESIS_DILUTION_RISK")
+
+
+def test_recurrence_dilution_on_low_float_high_ordinal():
+    t = _tracker()
+    assert t._classify_recurrence_pattern("X", 4, 5.0, 8.0, []) == \
+        ("DILUTION CYCLE", "HYPOTHESIS_DILUTION_RISK")
+
+
+def test_recurrence_structural_ultra_low_float():
+    t = _tracker()
+    assert t._classify_recurrence_pattern("X", 3, 5.0, 4.0, []) == \
+        ("STRUCTURAL", "HYPOTHESIS_HIGH_BETA_NOISE")
+
+
+def test_recurrence_serial_catalyst_on_earnings():
+    t = _tracker()
+    assert t._classify_recurrence_pattern("X", 2, 5.0, 50.0, ["8-K"]) == \
+        ("SERIAL CATALYST", "HYPOTHESIS_SERIAL_CATALYST")
+
+
+def test_recurrence_sustained_regime_low_ordinal():
+    t = _tracker()
+    assert t._classify_recurrence_pattern("X", 1, 5.0, 50.0, []) == \
+        ("SUSTAINED REGIME", "HYPOTHESIS_SUSTAINED_REGIME")
+
+
+def test_recurrence_unknown_fallthrough():
+    t = _tracker()
+    assert t._classify_recurrence_pattern("X", 5, 5.0, 50.0, []) == ("UNKNOWN", "MONITOR")
+
+
+def test_build_record_expected_return_is_none():
+    rec = _tracker().build_record("STAK", 4, 3.0, None, ["S-3", "6-K"])
+    assert rec["expected_return"] is None
+    assert rec["taxonomy"] == "DILUTION CYCLE"
+    assert rec["ticker"] == "STAK"
+
+
+# --------------------------------------------------------------------------- #
+#  Lens 2 — price-behavior classifier                                         #
+# --------------------------------------------------------------------------- #
 def test_no_hardcoded_expected_returns():
-    # OQ-SPARK-DECAY-ARC: every class profile must start unpopulated.
     assert all(p.expected_return is None for p in PROFILES.values())
 
 
@@ -53,7 +104,6 @@ def test_structural_noise_daio_like():
 
 
 def test_overlap_recorded_stak_like():
-    # violent pump that ALSO collapsed: primary DILUTION, but SERIAL_CATALYST flagged
     f = GainerFeatures(off_52w_high_frac=0.79, window_return_pct=147, max_drawdown_pct=-84,
                        up_spike_days=12, down_spike_days=8, avg_daily_volume=7934235,
                        range_position=0.19)
