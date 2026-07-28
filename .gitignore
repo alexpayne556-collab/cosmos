@@ -2,6 +2,8 @@
 # Event store + local state are runtime artifacts, never committed.
 /data/*.duckdb
 /data/cosmos.duckdb
+/data/cosmos.sqlite
+/data/shadow_book.sqlite
 /data/processed_runs.json
 /data/alerts.jsonl
 /data/alert_dedupe.json

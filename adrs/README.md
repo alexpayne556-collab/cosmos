@@ -37,6 +37,8 @@ trailers, never in recalled memory.
 | 025 | Miss Ledger + Friday Replay | claude (Annex A) | ratified |
 | 026 | Reader Corps (EDGAR/Drill 3) | gemini (chatter) | ratified |
 | 027 | Backfill Program | claude (Annex A) | ratified |
+| 028 | The Order Interlock | claude_code · ruling tyr | ratified |
+| 029 | The Shadow Book (paper under the leash) | tyr | ratified |
 
 ## Numbering caveat (honest)
 

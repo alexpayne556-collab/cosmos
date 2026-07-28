@@ -17,7 +17,9 @@ QUARANTINE: pathlib.Path = DATA_DIR / "quarantine"           # malformed / unaut
 ALERTS_PATH: pathlib.Path = DATA_DIR / "alerts.jsonl"        # load-bearing local alert log
 ALERT_DEDUPE_STATE: pathlib.Path = DATA_DIR / "alert_dedupe.json"
 PROCESSED_RUNS: pathlib.Path = DATA_DIR / "processed_runs.json"
-DUCKDB_PATH: pathlib.Path = DATA_DIR / "cosmos.duckdb"       # event store (created at runtime)
+DUCKDB_PATH: pathlib.Path = DATA_DIR / "cosmos.duckdb"       # (reserved; sqlite is the shipped store)
+LEDGER_DB: pathlib.Path = DATA_DIR / "cosmos.sqlite"         # descendant event store (ADR-001 migration; sqlite)
+SHADOW_BOOK_DB: pathlib.Path = DATA_DIR / "shadow_book.sqlite"  # ADR-029 paper book
 
 SCHEMAS_DIR: pathlib.Path = REPO_ROOT / "schemas"
 CREDENTIALS_DIR: pathlib.Path = REPO_ROOT / "credentials"    # service_account.json (gitignored)
