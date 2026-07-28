@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cosmos-savant"
+version = "1.0.1"
+description = "Cosmos Savant — always-on mission control for one active trader. Preparation machine, not a bot."
+requires-python = ">=3.11"
+authors = [
+    { name = "Tyr (Alex Payne)" },
+    { name = "Claude (verify station)" },
+    { name = "Gemini Spark (research)" },
+    { name = "Claude Code (builder)" },
+]
+readme = "README.md"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[tool.setuptools]
+packages = ["cosmos"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra -q"

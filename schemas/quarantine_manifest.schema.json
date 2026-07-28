@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cosmos-savant/quarantine_manifest/v1",
+  "title": "Quarantine Manifest v1",
+  "description": "Written beside every quarantined payload (Section 1 forensics + Section 8.2).",
+  "type": "object",
+  "required": ["schema", "quarantined_at_utc", "reason", "errors", "content_sha256", "payload"],
+  "properties": {
+    "schema": { "type": "string", "const": "quarantine_manifest/v1" },
+    "quarantined_at_utc": { "type": "string", "minLength": 1 },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "SELF_VERIFIED",
+        "FUNDAMENTAL_OVERWRITE",
+        "CONFABULATED_HISTORY",
+        "MALFORMED_ROW",
+        "SCHEMA_INVALID",
+        "INCOMPLETE_RUN",
+        "INVALID_REGEX",
+        "UNKNOWN"
+      ]
+    },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "source": { "type": ["string", "null"] },
+    "content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "payload": {}
+  },
+  "additionalProperties": true
+}

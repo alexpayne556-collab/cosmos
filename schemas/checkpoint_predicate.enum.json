@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cosmos-savant/checkpoint_predicate/v1",
+  "title": "Checkpoint Predicate Enum (ADR-015 Extension)",
+  "description": "Deterministic checkpoint predicate types. TEXT predicates (EDGAR_FILING_CONTAINS, NEWS_HEADLINE_MATCH) are matched via CheckpointMatchRule over frozen source scopes; PRICE_* predicates are deterministic by nature. OPEN_QUESTIONS: is this enum complete, or are T+1w/T+2w/T+4w interim-checkpoint predicate types owed (OQ-CHECKPOINT-1)?",
+  "type": "string",
+  "enum": [
+    "EDGAR_FILING_CONTAINS",
+    "NEWS_HEADLINE_MATCH",
+    "PRICE_ABOVE",
+    "PRICE_BELOW"
+  ]
+}

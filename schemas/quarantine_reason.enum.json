@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cosmos-savant/quarantine_reason/v1",
+  "title": "Quarantine Reason Enum",
+  "description": "Section 1 forensic reason codes plus pipeline-integrity codes.",
+  "type": "string",
+  "enum": [
+    "SELF_VERIFIED",
+    "FUNDAMENTAL_OVERWRITE",
+    "CONFABULATED_HISTORY",
+    "MALFORMED_ROW",
+    "SCHEMA_INVALID",
+    "INCOMPLETE_RUN",
+    "INVALID_REGEX",
+    "UNKNOWN"
+  ]
+}

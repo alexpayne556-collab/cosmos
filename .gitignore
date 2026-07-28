@@ -1,0 +1,29 @@
+# --- Cosmos Savant ---
+# Event store + local state are runtime artifacts, never committed.
+/data/*.duckdb
+/data/cosmos.duckdb
+/data/processed_runs.json
+/data/alerts.jsonl
+/data/alert_dedupe.json
+/data/staging_mirror/*
+/data/quarantine/*
+!/data/staging_mirror/.gitkeep
+!/data/quarantine/.gitkeep
+
+# Credentials — NEVER commit (Section 8.1)
+/credentials/*
+!/credentials/.gitkeep
+service_account.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+
+# local harness settings
+.claude/settings.local.json

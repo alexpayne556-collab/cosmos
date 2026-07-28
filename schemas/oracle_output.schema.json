@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cosmos-savant/oracle_output/v1.0",
+  "title": "Oracle Output",
+  "description": "The only three fields the oracle may write (Section 1).",
+  "type": "object",
+  "required": ["regime", "asset_class", "credit_strain"],
+  "properties": {
+    "regime": { "type": "string", "minLength": 1 },
+    "asset_class": { "type": "string", "enum": ["RISK_ON", "NEUTRAL", "RISK_OFF", "DEFENSIVE"] },
+    "credit_strain": { "type": "string", "enum": ["LOW", "NORMAL", "ELEVATED", "ACUTE"] }
+  },
+  "additionalProperties": false
+}

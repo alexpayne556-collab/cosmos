@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cosmos-savant/prediction_row/v1.0.1",
+  "title": "Prediction Row v1.0.1",
+  "description": "One belief, written before the outcome. Generator lane required at intake; verify/oracle/reconcile lanes filled downstream by their owning stations only (Section 1).",
+  "type": "object",
+  "required": [
+    "ticker",
+    "direction",
+    "offset_target_pct",
+    "offset_invalidation_pct",
+    "distribution",
+    "thesis",
+    "canon_tags",
+    "source_urls",
+    "price_mode"
+  ],
+  "properties": {
+    "prediction_id": { "type": "string", "minLength": 1 },
+    "generator_id": { "type": "string" },
+    "ticker": { "type": "string", "minLength": 1, "pattern": "^[A-Z.]{1,8}$" },
+    "direction": { "type": "string", "enum": ["up", "down", "no_move"] },
+    "price_mode": { "type": "string", "enum": ["ABSOLUTE", "RELATIVE_PCT"] },
+    "offset_target_pct": { "type": "number" },
+    "offset_invalidation_pct": { "type": "number" },
+    "distribution": { "type": "object" },
+    "thesis": { "type": "string", "minLength": 1 },
+    "canon_tags": { "type": "array", "items": { "type": "string" } },
+    "source_urls": { "type": "array", "items": { "type": "string" } },
+    "strategy_family": { "type": "string" },
+    "horizon_days": { "type": "integer", "minimum": 0 },
+
+    "verified_price": { "type": "number", "exclusiveMinimum": 0 },
+    "target_price": { "type": "number", "exclusiveMinimum": 0 },
+    "invalidation_price": { "type": "number", "exclusiveMinimum": 0 },
+    "anchor_close": { "type": "number", "exclusiveMinimum": 0 },
+    "float": { "type": "number", "minimum": 0 },
+    "market_cap": { "type": "number", "minimum": 0 },
+    "short_interest": { "type": "number", "minimum": 0 },
+
+    "regime": { "type": "string" },
+    "asset_class": { "type": "string", "enum": ["RISK_ON", "NEUTRAL", "RISK_OFF", "DEFENSIVE"] },
+    "credit_strain": { "type": "string", "enum": ["LOW", "NORMAL", "ELEVATED", "ACUTE"] },
+
+    "status": { "type": "string" },
+    "brier": { "type": "number", "minimum": 0, "maximum": 1 }
+  },
+  "additionalProperties": true
+}
