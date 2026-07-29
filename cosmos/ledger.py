@@ -232,3 +232,32 @@ def genesis_import(con) -> int:
         except DuplicatePredictionError:
             pass
     return n
+
+
+def all_prediction_ids(con) -> set:
+    """Every prediction_id in the ledger — seed for intake's dup detection across polls."""
+    return {r[0] for r in con.execute("SELECT prediction_id FROM predictions").fetchall()}
+
+
+def enrich_prices(con, prediction_id: str, *, anchor_close=None, target_price=None,
+                  invalidation_price=None, entry_price=None) -> bool:
+    """VERIFY-lane secondary enrichment (ADR-030 anchor sequencing): fill absolute
+    prices AFTER a PENDING_VERIFY intake. Touches ONLY price columns — never
+    ts_logged, distribution_logged_at, or the t0 distribution. The belief's
+    commitment time is immutable; prices are grading inputs, filled later."""
+    cur = con.execute(
+        "UPDATE predictions SET anchor_close=COALESCE(?, anchor_close), "
+        "target_price=COALESCE(?, target_price), "
+        "invalidation_price=COALESCE(?, invalidation_price), "
+        "entry_price=COALESCE(?, entry_price) WHERE prediction_id=?",
+        (anchor_close, target_price, invalidation_price, entry_price, prediction_id))
+    con.commit()
+    return cur.rowcount > 0
+
+
+def pending_price_verification(con) -> list:
+    """Open directional predictions whose grading prices aren't filled yet
+    (PENDING_VERIFY = target_price NULL) — the enrichment work-list."""
+    return [r[0] for r in con.execute(
+        "SELECT prediction_id FROM predictions WHERE resolved=0 AND target_price IS NULL "
+        "AND direction IN ('up','down')").fetchall()]
