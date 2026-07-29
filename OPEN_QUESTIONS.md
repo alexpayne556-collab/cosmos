@@ -29,9 +29,10 @@ shrinks then regrows is a healthy organism; an empty one is blindness.
 - **OQ-ADR-ROUND** — `round-of-origin` unknown for most ADRs (only ADR-002's round-3 provoker is known).
 
 ## Unverified capabilities (CLAIMED — nothing load-bears)
-- **OQ-FRED-CAP** — FRED direct access not in the MEASURED set; needs API key / nonce proof. HYG proxy (over MEASURED Robinhood bars) is the load-bearing path.
+- **OQ-FRED-CAP** — RESOLVED 2026-07-29: FRED direct access now **MEASURED** — the key pulls BAMLH0A0HYM2 (Phase-2 smoke test, `scripts/smoke_keys.py`). Unblocks the ADR-004 oracle lane. HYG proxy remains the fallback. Key is chat-exposed → rotate, then re-smoke. STILL OWED (Phase-2 step 3): pull BAMLH0A0HYM2 + T10Y2Y once and STORE for the oracle.
 - **OQ-GTASKS-CAP** — Drill-3 names a "Google Tasks queue" for human alerts; not measured. Load-bearing alert path is local `/data/alerts.jsonl` + Sheet mirror; Google-Tasks delivery pending a `capability_proofs` nonce.
-- **OQ-OPTIONS** — options quotes FAILED (403, no entitlement). All implied-move features dead until entitlement changes.
+- **OQ-OPTIONS** — options quotes FAILED (403, no entitlement). All implied-move features dead until entitlement changes. **Phase-2 step 2 (options-SCANNER IV-filter reopening test) still OWED** — the scanner may expose IV/HV/OI filters even though quotes 403.
+- **OQ-CAP-LEDGER-PERSIST** — Phase-2 GATE 2 MET 2026-07-29: **11/11 providers MEASURED** via `scripts/smoke_keys.py` (gemini · fred · data.gov · polygon · fmp · alpha_vantage · eodhd · finnhub · fda · newsdata · tiingo). But there is NO ADR-005 capability-ledger TABLE yet — the result is re-runnable from the script, not persisted as a measured row with a timestamp. Keys are PRE-ROTATION (chat-exposed); re-run after Tyr rotates. Build the capability ledger to persist MEASURED/FAILED over time.
 
 ## Boards
 - **OQ-BOARDS-PRESS** — ADR-021 enumerates no shipping press for HORMUZ (Lloyd's List / TradeWinds proposed, pending).
