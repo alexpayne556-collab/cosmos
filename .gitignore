@@ -4,6 +4,7 @@
 /data/cosmos.duckdb
 /data/cosmos.sqlite
 /data/shadow_book.sqlite
+/data/observations.sqlite
 /data/processed_runs.json
 /data/alerts.jsonl
 /data/alert_dedupe.json

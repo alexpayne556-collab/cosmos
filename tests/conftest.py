@@ -18,6 +18,7 @@ def isolate_data(tmp_path, monkeypatch):
     monkeypatch.setattr(paths, "PROCESSED_RUNS", d / "processed_runs.json")
     monkeypatch.setattr(paths, "LEDGER_DB", d / "cosmos.sqlite")
     monkeypatch.setattr(paths, "SHADOW_BOOK_DB", d / "shadow_book.sqlite")
+    monkeypatch.setattr(paths, "OBSERVATIONS_DB", d / "observations.sqlite")
     paths.ensure_dirs()
     yield
 

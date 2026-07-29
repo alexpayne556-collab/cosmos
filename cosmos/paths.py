@@ -20,6 +20,7 @@ PROCESSED_RUNS: pathlib.Path = DATA_DIR / "processed_runs.json"
 DUCKDB_PATH: pathlib.Path = DATA_DIR / "cosmos.duckdb"       # (reserved; sqlite is the shipped store)
 LEDGER_DB: pathlib.Path = DATA_DIR / "cosmos.sqlite"         # descendant event store (ADR-001 migration; sqlite)
 SHADOW_BOOK_DB: pathlib.Path = DATA_DIR / "shadow_book.sqlite"  # ADR-029 paper book
+OBSERVATIONS_DB: pathlib.Path = DATA_DIR / "observations.sqlite"  # reader/research lane (ADR-026 firewall)
 
 SCHEMAS_DIR: pathlib.Path = REPO_ROOT / "schemas"
 CREDENTIALS_DIR: pathlib.Path = REPO_ROOT / "credentials"    # service_account.json (gitignored)

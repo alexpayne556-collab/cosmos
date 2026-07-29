@@ -10,7 +10,9 @@ Fair-access compliant:
   * NEVER rotate identity or spoof the User-Agent to evade a block. The retry
     and the fallback use the SAME declared UA. This line is load-bearing.
 
-Raw responses are archived atomically to /data/staging_mirror before parsing.
+Raw responses are archived atomically to /data/staging_mirror before parsing;
+each success result carries `archived_path` so a caller parses the byte-for-byte
+archived artifact (never a second fetch — the transport owns the UA).
 The HTTP layer is injectable (`fetch`) so the whole policy is testable offline.
 """
 from __future__ import annotations
@@ -71,13 +73,14 @@ class EdgarPoller:
 
     # ---- public API ------------------------------------------------------
     def poll(self, url: str, *, rng=None) -> dict:
-        """Poll a live EDGAR endpoint. Returns a result dict describing the mode."""
+        """Poll a live EDGAR endpoint. Returns a result dict describing the mode;
+        success modes carry `archived_path` (the raw body on disk)."""
         self._throttle()
         status, body = self._safe_fetch(url)
         if status == 200:
-            self._archive(url, body)
+            archived = self._archive(url, body)
             return {"mode": "LIVE", "status": 200, "bytes": len(body),
-                    "user_agent": self.user_agent}
+                    "archived_path": archived, "user_agent": self.user_agent}
         if status in (403, 429):
             return self._handle_block(url, status, rng=rng)
         raise HTTPStatusError(status)
@@ -92,9 +95,9 @@ class EdgarPoller:
             self._throttle()
             status2, body = self._safe_fetch(url)   # SAME user_agent — no rotation
             if status2 == 200:
-                self._archive(url, body)
+                archived = self._archive(url, body)
                 return {"mode": "LIVE_RECOVERED", "status": 200, "attempts": attempt,
-                        "user_agent": self.user_agent}
+                        "archived_path": archived, "user_agent": self.user_agent}
         return self._bulk_fallback(rng=rng)
 
     def _bulk_fallback(self, *, rng=None) -> dict:
@@ -107,14 +110,16 @@ class EdgarPoller:
         self._throttle()
         status, body = self._safe_fetch(BULK_INDEX_URL)   # STILL the same UA
         if status == 200:
-            self._archive(BULK_INDEX_URL, body)
-            return {"mode": "BULK_FALLBACK", "status": 200, "user_agent": self.user_agent}
+            archived = self._archive(BULK_INDEX_URL, body)
+            return {"mode": "BULK_FALLBACK", "status": 200,
+                    "archived_path": archived, "user_agent": self.user_agent}
         return {"mode": "BULK_FALLBACK_DEGRADED", "status": status,
                 "user_agent": self.user_agent}
 
     # ---- archive ---------------------------------------------------------
-    def _archive(self, url: str, body: bytes) -> None:
+    def _archive(self, url: str, body: bytes) -> str:
         paths.ensure_dirs()
         safe = "".join(c if c.isalnum() else "_" for c in url)[-80:]
         out = paths.STAGING_MIRROR / f"edgar_{safe}.raw"
         atomic_write_bytes(out, body)
+        return str(out)
