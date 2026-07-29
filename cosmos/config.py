@@ -66,6 +66,14 @@ def status() -> dict:
         "gemini": has_gemini_key(),
         "fred": has_fred_key(),
         "datagov": has_datagov_key(),
+        "polygon": has_polygon_key(),
+        "fmp": has_fmp_key(),
+        "alpha_vantage": has_alpha_vantage_key(),
+        "eodhd": has_eodhd_key(),
+        "finnhub": has_finnhub_key(),
+        "fda": has_fda_key(),
+        "newsdata": has_newsdata_key(),
+        "tiingo": has_tiingo_key(),
         "google_service_account": has_google_service_account(),
     }
 
@@ -82,6 +90,40 @@ def has_datagov_key() -> bool:
     """api.data.gov gateway key (Census / GovInfo / Regulations.gov / FEC / NREL / ...).
     Consumers read the value via os.getenv('DATA_GOV_API_KEY') after load_credentials()."""
     return bool(os.getenv("DATA_GOV_API_KEY"))
+
+
+# --- market-data + catalyst vendor keys (credentials/api_keys.env) -----------
+# Booleans only; consumers read the value via os.getenv(<VAR>) after load_credentials().
+def has_polygon_key() -> bool:
+    return bool(os.getenv("POLYGON_API_KEY"))
+
+
+def has_fmp_key() -> bool:
+    return bool(os.getenv("FMP_API_KEY"))
+
+
+def has_alpha_vantage_key() -> bool:
+    return bool(os.getenv("ALPHA_VANTAGE_API_KEY"))
+
+
+def has_eodhd_key() -> bool:
+    return bool(os.getenv("EODHD_API_KEY"))
+
+
+def has_finnhub_key() -> bool:
+    return bool(os.getenv("FINNHUB_API_KEY"))
+
+
+def has_fda_key() -> bool:
+    return bool(os.getenv("FDA_API_KEY"))
+
+
+def has_newsdata_key() -> bool:
+    return bool(os.getenv("NEWSDATA_API_KEY"))
+
+
+def has_tiingo_key() -> bool:
+    return bool(os.getenv("TIINGO_API_KEY"))
 
 
 def has_google_service_account() -> bool:
