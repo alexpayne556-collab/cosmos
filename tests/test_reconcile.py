@@ -33,10 +33,23 @@ def test_first_touch_pending():
 
 
 # ---- Brier + Murphy --------------------------------------------------------
+def _dist(a, b, c):
+    return {"hit_target_first": a, "hit_invalidation_first": b, "expire_in_range": c}
+
+
 def test_multiclass_brier_bounds():
-    assert reconcile.multiclass_brier({"up": 1.0, "down": 0.0, "no_move": 0.0}, "up") == 0.0
-    assert reconcile.multiclass_brier({"up": 0.0, "down": 1.0, "no_move": 0.0}, "up") == 2.0
-    assert reconcile.multiclass_brier({"up": 0.6, "down": 0.3, "no_move": 0.1}, "up") == pytest.approx(0.26)
+    assert reconcile.multiclass_brier(_dist(1.0, 0.0, 0.0), "hit_target_first") == 0.0
+    assert reconcile.multiclass_brier(_dist(0.0, 1.0, 0.0), "hit_target_first") == 2.0
+    assert reconcile.multiclass_brier(_dist(0.6, 0.3, 0.1), "hit_target_first") == pytest.approx(0.26)
+
+
+def test_amkr_like_invalidation_brier():
+    pred = {"generator_id": "claude", "direction": "up",
+            "distribution": _dist(0.58, 0.27, 0.15),
+            "target_price": 63.5, "invalidation_price": 58.5}
+    r = reconcile.grade(pred, [_bar(60.72, 54.92, 55.18)])   # extended breach of 58.5
+    assert r.outcome_class == "down" and r.first_touch_rule == "INVALIDATION_FIRST"
+    assert r.brier == pytest.approx(0.58 ** 2 + (0.27 - 1) ** 2 + 0.15 ** 2)  # ~0.8918
 
 
 def test_murphy_identity_holds():
@@ -78,7 +91,7 @@ def test_full_loop_closes():
     payload = {
         "prediction_id": "loop-1", "generator_id": "gemini_spark", "ticker": "FRO", "direction": "up",
         "offset_target_pct": 5.0, "offset_invalidation_pct": -3.0,
-        "distribution": {"up": 0.6, "down": 0.3, "no_move": 0.1},
+        "distribution": {"hit_target_first": 0.6, "hit_invalidation_first": 0.3, "expire_in_range": 0.1},
         "thesis": "t", "canon_tags": ["LITERATURE"], "source_urls": ["https://x"],
         "price_mode": "RELATIVE_PCT",
     }

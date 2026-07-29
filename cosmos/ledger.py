@@ -127,6 +127,39 @@ GENESIS_ROWS = [
 ]
 
 
+# Ratified generator distributions (OQ-GENESIS-DISTRIBUTIONS), delivered 2026-07-28.
+# Direction-agnostic schema {hit_target_first, hit_invalidation_first, expire_in_range},
+# sum == 1.00. VERIFY-STATION NOTE: the drop covered only 6 of the 10 GENESIS rows;
+# CLS / NE / CDNS / SMH still have NO distribution and cannot score Brier
+# (OQ-GENESIS-DISTRIBUTIONS-MISSING4 — the verify station will not fabricate them).
+GENESIS_DISTRIBUTIONS = {
+    "AMKR": {"hit_target_first": 0.58, "hit_invalidation_first": 0.27, "expire_in_range": 0.15},
+    "APLD": {"hit_target_first": 0.58, "hit_invalidation_first": 0.27, "expire_in_range": 0.15},
+    "BA":   {"hit_target_first": 0.55, "hit_invalidation_first": 0.30, "expire_in_range": 0.15},
+    "PYPL": {"hit_target_first": 0.58, "hit_invalidation_first": 0.27, "expire_in_range": 0.15},
+    "KO":   {"hit_target_first": 0.20, "hit_invalidation_first": 0.20, "expire_in_range": 0.60},
+    "STX":  {"hit_target_first": 0.62, "hit_invalidation_first": 0.23, "expire_in_range": 0.15},
+}
+# Supplied in the same drop but attached to NO prediction row (board names + names
+# not in Section 5). Retained as priors only; they score nothing until a belief exists.
+UNATTACHED_PRIORS = {
+    "FRO":  {"hit_target_first": 0.60, "hit_invalidation_first": 0.25, "expire_in_range": 0.15},
+    "INSW": {"hit_target_first": 0.58, "hit_invalidation_first": 0.27, "expire_in_range": 0.15},
+    "KTOS": {"hit_target_first": 0.55, "hit_invalidation_first": 0.30, "expire_in_range": 0.15},
+    "ASTS": {"hit_target_first": 0.62, "hit_invalidation_first": 0.23, "expire_in_range": 0.15},
+    "RKLB": {"hit_target_first": 0.60, "hit_invalidation_first": 0.25, "expire_in_range": 0.15},
+    "LUNR": {"hit_target_first": 0.56, "hit_invalidation_first": 0.29, "expire_in_range": 0.15},
+    "AEM":  {"hit_target_first": 0.57, "hit_invalidation_first": 0.28, "expire_in_range": 0.15},
+    "FNV":  {"hit_target_first": 0.55, "hit_invalidation_first": 0.30, "expire_in_range": 0.15},
+    "NEM":  {"hit_target_first": 0.54, "hit_invalidation_first": 0.31, "expire_in_range": 0.15},
+    "UHS":  {"hit_target_first": 0.52, "hit_invalidation_first": 0.33, "expire_in_range": 0.15},
+    "NXPI": {"hit_target_first": 0.56, "hit_invalidation_first": 0.29, "expire_in_range": 0.15},
+    "KLAC": {"hit_target_first": 0.60, "hit_invalidation_first": 0.25, "expire_in_range": 0.15},
+    "ENPH": {"hit_target_first": 0.55, "hit_invalidation_first": 0.30, "expire_in_range": 0.15},
+    "F":    {"hit_target_first": 0.20, "hit_invalidation_first": 0.20, "expire_in_range": 0.60},
+}
+
+
 def genesis_import(con) -> int:
     n = 0
     for gen, pid, ticker, direction, mode, entry, target, inval in GENESIS_ROWS:
@@ -134,7 +167,7 @@ def genesis_import(con) -> int:
             log_prediction(
                 con, prediction_id=pid, ticker=ticker, direction=direction, price_mode=mode,
                 generator_id=gen, strategy_family="genesis",
-                distribution=None,  # not supplied by generators
+                distribution=GENESIS_DISTRIBUTIONS.get(ticker),  # 6/10 covered; rest NULL (flagged)
                 thesis="Section-5 live-state import (GENESIS)",
                 canon_tags=["GENESIS"], source_urls=[],
                 anchor_close=(entry if mode == "RELATIVE_PCT" else None),

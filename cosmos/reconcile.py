@@ -25,7 +25,16 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Callable, List, Optional, Sequence
 
-OUTCOME_CLASSES = ("up", "down", "no_move")
+OUTCOME_CLASSES = ("up", "down", "no_move")            # market-direction labels (readability)
+# Brier is scored in the generator's direction-agnostic bucket space
+# (matches the ratified GENESIS distribution schema, OQ-GENESIS-DISTRIBUTIONS):
+OUTCOME_BUCKETS = ("hit_target_first", "hit_invalidation_first", "expire_in_range")
+RULE_TO_BUCKET = {
+    "TARGET_FIRST": "hit_target_first",
+    "INVALIDATION_FIRST": "hit_invalidation_first",
+    "AMBIGUOUS_BOTH_TOUCHED": "hit_invalidation_first",  # ambiguous == loss side
+    "EXPIRY_SETTLE": "expire_in_range",
+}
 ALPHA = 0.10  # EWMA weight learning rate (inherited from Hermes)
 BACKFILL_GENERATOR = "backfill_historical"
 
@@ -59,10 +68,11 @@ def first_touch(direction: str, bars: Sequence[dict], target: float, invalidatio
     return (None, "PENDING")
 
 
-def multiclass_brier(distribution: dict, outcome_class: str) -> float:
-    """One-hot multi-class Brier: sum_c (p_c - y_c)^2. Perfect 0.0, worst 2.0."""
-    return sum((distribution.get(c, 0.0) - (1.0 if c == outcome_class else 0.0)) ** 2
-               for c in OUTCOME_CLASSES)
+def multiclass_brier(distribution: dict, outcome: str, classes=OUTCOME_BUCKETS) -> float:
+    """One-hot multi-class Brier over `classes`: sum_c (p_c - y_c)^2. Perfect 0.0,
+    worst 2.0. `outcome` is the realized class (an OUTCOME_BUCKETS member)."""
+    return sum((distribution.get(c, 0.0) - (1.0 if c == outcome else 0.0)) ** 2
+               for c in classes)
 
 
 def murphy_decomposition(pairs: Sequence[tuple]) -> dict:
@@ -120,8 +130,9 @@ def grade(prediction: dict, bars: Sequence[dict], *, now_ts: Optional[str] = Non
 def _score(gen, dist, outcome, rule, settle) -> Resolution:
     excluded = (gen == BACKFILL_GENERATOR)          # backfill: atlas + lag only, never Brier
     brier = None
-    if not excluded and dist is not None:
-        brier = multiclass_brier(dist, outcome)
+    bucket = RULE_TO_BUCKET.get(rule)
+    if not excluded and dist is not None and bucket is not None:
+        brier = multiclass_brier(dist, bucket)      # scored in bucket space
     return Resolution(True, outcome, rule, settle, brier, excluded)
 
 
