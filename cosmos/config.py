@@ -1,0 +1,81 @@
+"""
+Credentials loader — dependency-free, gitignored-only.
+
+Loads `credentials/*.env` into the process environment so modules read keys via
+os.environ, and no key ever appears in code or a chat transcript. Locations come
+from `cosmos.paths` (single source of truth — no duplicated REPO_ROOT).
+
+Deviations from the delivered spec, on purpose:
+  * Loading is EXPLICIT via load_credentials(), not on import. A module that reads
+    secrets as an import side-effect would leak real keys into every test/tool
+    process. Call load_credentials() once at process startup.
+  * No `python-dotenv` dependency — a tiny parser keeps the project dependency-free
+    (same reasoning as the in-house schema validator).
+"""
+from __future__ import annotations
+
+import os
+import pathlib
+
+from . import paths
+
+def google_service_account_path() -> str:
+    """Resolved at CALL time (not import) so a value set via credentials/*.env or the
+    environment is honored. (The fan-out audit caught the import-time-capture bug.)"""
+    return os.getenv(
+        "GOOGLE_SERVICE_ACCOUNT_PATH", str(paths.CREDENTIALS_DIR / "service_account.json")
+    )
+
+
+# Back-compat constant (import-time default). Prefer google_service_account_path().
+GOOGLE_SERVICE_ACCOUNT_PATH: str = google_service_account_path()
+
+
+def _load_env_file(path: pathlib.Path) -> int:
+    """Minimal KEY=VALUE .env parser. Never overrides an already-set env var."""
+    if not path.exists():
+        return 0
+    loaded = 0
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        key = key.strip()
+        val = val.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = val
+            loaded += 1
+    return loaded
+
+
+def load_credentials() -> dict:
+    """Load every `credentials/*.env` into the environment. Returns a status map of
+    BOOLEANS only — never key values."""
+    paths.CREDENTIALS_DIR.mkdir(parents=True, exist_ok=True)
+    env_files = []
+    for envf in sorted(paths.CREDENTIALS_DIR.glob("*.env")):
+        _load_env_file(envf)
+        env_files.append(envf.name)
+    return {"env_files": env_files, **status()}
+
+
+def status() -> dict:
+    """Booleans only — safe to log, contains no secret values."""
+    return {
+        "gemini": has_gemini_key(),
+        "fred": has_fred_key(),
+        "google_service_account": has_google_service_account(),
+    }
+
+
+def has_gemini_key() -> bool:
+    return bool(os.getenv("GEMINI_API_KEY"))
+
+
+def has_fred_key() -> bool:
+    return bool(os.getenv("FRED_API_KEY"))
+
+
+def has_google_service_account() -> bool:
+    return pathlib.Path(google_service_account_path()).exists()
