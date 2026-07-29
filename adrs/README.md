@@ -40,6 +40,9 @@ trailers, never in recalled memory.
 | 028 | The Order Interlock | claude_code · ruling tyr | ratified |
 | 029 | The Shadow Book (paper under the leash) | tyr | ratified |
 | 030 | The Prior-Commitment Gate | claude (verify) · ratified tyr | ratified |
+| 031 | Charter amendment: §-1 Why + status markers | claude_code · ratified tyr | ratified |
+| 032 | Builder discipline / hooks (CLAUDE.md Steps 2-4) | claude_code | reserved |
+| 033 | Skill-relative weighting (weight-math) | per queued spec | reserved |
 
 ## Numbering caveat (honest)
 
