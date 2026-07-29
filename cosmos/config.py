@@ -65,6 +65,7 @@ def status() -> dict:
     return {
         "gemini": has_gemini_key(),
         "fred": has_fred_key(),
+        "datagov": has_datagov_key(),
         "google_service_account": has_google_service_account(),
     }
 
@@ -75,6 +76,12 @@ def has_gemini_key() -> bool:
 
 def has_fred_key() -> bool:
     return bool(os.getenv("FRED_API_KEY"))
+
+
+def has_datagov_key() -> bool:
+    """api.data.gov gateway key (Census / GovInfo / Regulations.gov / FEC / NREL / ...).
+    Consumers read the value via os.getenv('DATA_GOV_API_KEY') after load_credentials()."""
+    return bool(os.getenv("DATA_GOV_API_KEY"))
 
 
 def has_google_service_account() -> bool:
