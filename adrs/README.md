@@ -41,7 +41,7 @@ trailers, never in recalled memory.
 | 029 | The Shadow Book (paper under the leash) | tyr | ratified |
 | 030 | The Prior-Commitment Gate | claude (verify) · ratified tyr | ratified |
 | 031 | Charter amendment: §-1 Why + status markers | claude_code · ratified tyr | ratified |
-| 032 | Builder discipline / hooks (CLAUDE.md Steps 2-4) | claude_code | reserved |
+| 032 | The Frozen-Governor Enforcement Hook | claude_code · ratified tyr | ratified |
 | 033 | Skill-relative weighting (weight-math) | per queued spec | reserved |
 
 ## Numbering caveat (honest)

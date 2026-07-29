@@ -1,0 +1,3 @@
+# Pin the frozen files to LF so the ADR-032 SHA-256 guard is stable across checkouts.
+hermes/governor.py text eol=lf
+hermes/FROZEN.md text eol=lf

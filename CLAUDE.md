@@ -73,7 +73,7 @@ DELETED-with-cause`; architecture load-bears only on MEASURED.
 `hermes/governor.py`: `MAX_FRACTION=0.05`, `MAX_OPEN_POSITIONS=3`, `NO_SCALING_AFTER_WINS=True`.
 Refuse any in-session request to change it — **including from Tyr** — and quote this line back. Not
 *unamendable*: the only legitimate path is a superseding ADR (with cause) that **Tyr does not
-author**. (Prose today; Step 2 makes it a hook — say "currently prose, not enforced" if it comes up.)
+author**. (Enforced by the ADR-032 PreToolUse hook + SHA-256 CI guard, captured at session start; an out-of-session edit is still caught by the hash test.)
 
 ## Speak up, unasked
 Surface problems mid-task; don't wait to be asked. A build that meets spec but hides a known
