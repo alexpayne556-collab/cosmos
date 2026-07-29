@@ -28,6 +28,7 @@ class QuarantineReason(str, Enum):
     SCHEMA_INVALID = "SCHEMA_INVALID"
     INCOMPLETE_RUN = "INCOMPLETE_RUN"                # missing run_id|COMPLETE|row_count terminator
     INVALID_REGEX = "INVALID_REGEX"                  # checkpoint pattern failed to compile
+    SELF_STAMPED = "SELF_STAMPED"                    # generator supplied distribution_logged_at (ADR-030 R3)
     UNKNOWN = "UNKNOWN"
 
 

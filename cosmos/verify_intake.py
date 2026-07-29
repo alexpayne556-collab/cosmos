@@ -65,6 +65,7 @@ FIELD_OWNER: Dict[str, Station] = {
     "run_date": Station.VERIFY,
     "run_magnitude_pct": Station.VERIFY,
     "run_history": Station.VERIFY,
+    "distribution_logged_at": Station.VERIFY,   # ADR-030 R3: intake stamps it; generators never do
     # oracle lane
     "regime": Station.ORACLE,
     "asset_class": Station.ORACLE,
@@ -93,6 +94,8 @@ DISTRIBUTION_TOLERANCE = 0.001
 
 
 def _reason_for(fieldname: str) -> QuarantineReason:
+    if fieldname == "distribution_logged_at":
+        return QuarantineReason.SELF_STAMPED       # ADR-030 R3: a self-reported commit time is backdateable
     if fieldname in _FUNDAMENTAL_FIELDS:
         return QuarantineReason.FUNDAMENTAL_OVERWRITE
     if fieldname in _HISTORY_FIELDS:

@@ -39,6 +39,7 @@ trailers, never in recalled memory.
 | 027 | Backfill Program | claude (Annex A) | ratified |
 | 028 | The Order Interlock | claude_code · ruling tyr | ratified |
 | 029 | The Shadow Book (paper under the leash) | tyr | ratified |
+| 030 | The Prior-Commitment Gate | claude (verify) · ratified tyr | ratified |
 
 ## Numbering caveat (honest)
 

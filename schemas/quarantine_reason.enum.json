@@ -12,6 +12,7 @@
     "SCHEMA_INVALID",
     "INCOMPLETE_RUN",
     "INVALID_REGEX",
+    "SELF_STAMPED",
     "UNKNOWN"
   ]
 }

@@ -11,25 +11,28 @@ def _bar(hi, lo, close):
 
 
 # ---- first-touch -----------------------------------------------------------
+AT = "2026-07-27T14:00:00Z"   # the _bar timestamp -> outcome_determined_at
+
+
 def test_first_touch_target_first_long():
-    assert reconcile.first_touch("up", [_bar(64, 62, 63.8)], 63.5, 58.5) == ("up", "TARGET_FIRST")
+    assert reconcile.first_touch("up", [_bar(64, 62, 63.8)], 63.5, 58.5) == ("up", "TARGET_FIRST", AT)
 
 
 def test_first_touch_invalidation_first_long():
-    assert reconcile.first_touch("up", [_bar(60, 58, 58.2)], 63.5, 58.5) == ("down", "INVALIDATION_FIRST")
+    assert reconcile.first_touch("up", [_bar(60, 58, 58.2)], 63.5, 58.5) == ("down", "INVALIDATION_FIRST", AT)
 
 
 def test_first_touch_ambiguous_is_loss():
-    assert reconcile.first_touch("up", [_bar(64, 58, 60)], 63.5, 58.5) == ("down", "AMBIGUOUS_BOTH_TOUCHED")
+    assert reconcile.first_touch("up", [_bar(64, 58, 60)], 63.5, 58.5) == ("down", "AMBIGUOUS_BOTH_TOUCHED", AT)
 
 
 def test_first_touch_short_direction():
-    assert reconcile.first_touch("down", [_bar(39, 37, 37.5)], 38.0, 41.6) == ("down", "TARGET_FIRST")
-    assert reconcile.first_touch("down", [_bar(42, 40, 41.5)], 38.0, 41.6) == ("up", "INVALIDATION_FIRST")
+    assert reconcile.first_touch("down", [_bar(39, 37, 37.5)], 38.0, 41.6) == ("down", "TARGET_FIRST", AT)
+    assert reconcile.first_touch("down", [_bar(42, 40, 41.5)], 38.0, 41.6) == ("up", "INVALIDATION_FIRST", AT)
 
 
 def test_first_touch_pending():
-    assert reconcile.first_touch("up", [_bar(61, 59, 60)], 63.5, 58.5) == (None, "PENDING")
+    assert reconcile.first_touch("up", [_bar(61, 59, 60)], 63.5, 58.5) == (None, "PENDING", None)
 
 
 # ---- Brier + Murphy --------------------------------------------------------
@@ -53,8 +56,9 @@ def test_amkr_like_invalidation_brier():
 
 
 def test_murphy_identity_holds():
-    pairs = [(0.9, 1), (0.9, 1), (0.1, 0), (0.6, 1), (0.3, 0), (0.6, 0)]
-    d = reconcile.murphy_decomposition(pairs)
+    pairs = [(round(0.1 * (i % 5 + 1), 2), i % 2) for i in range(20)]  # n=20, 5 distinct forecasts
+    d, reason = reconcile.murphy_decomposition(pairs)
+    assert d is not None
     mse = sum((p - y) ** 2 for p, y in pairs) / len(pairs)
     assert d["brier"] == pytest.approx(mse)
     assert d["brier"] == pytest.approx(d["reliability"] - d["resolution"] + d["uncertainty"])
@@ -103,7 +107,8 @@ def test_full_loop_closes():
                           price_mode="RELATIVE_PCT", generator_id="gemini_spark",
                           distribution=payload["distribution"], anchor_close=38.59,
                           target_price=target, invalidation_price=inval,
-                          expiry_timestamp="2026-08-01T00:00:00Z")
+                          expiry_timestamp="2026-08-01T00:00:00Z",
+                          ts="2026-07-27T10:00:00Z")   # prior committed BEFORE the 14:00Z touch -> ELIGIBLE
 
     # MEASURE — synthetic 15s bars where the target is touched first
     bars = [_bar(40.60, 38.20, 40.55)]
