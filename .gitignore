@@ -29,3 +29,8 @@ dist/
 
 # local harness settings
 .claude/settings.local.json
+
+# API keys / secrets — never commit (repo is PUBLIC)
+.env
+*.env
+credentials/*.env

@@ -226,7 +226,7 @@ def genesis_import(con) -> int:
                 anchor_close=(entry if mode == "RELATIVE_PCT" else None),
                 entry_price=(entry if mode == "ABSOLUTE" else None),
                 target_price=target, invalidation_price=inval,
-                expiry_timestamp=None,
+                expiry_timestamp=None,  # horizons unspecified in Section 5
             )
             n += 1
         except DuplicatePredictionError:
